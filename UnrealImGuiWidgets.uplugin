@@ -1,0 +1,38 @@
+{
+	"FileVersion": 1,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Various Helper for ImGui in unreal",
+	"Description": "",
+	"Category": "Scripting",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false,
+
+	"Modules": [
+		{
+			"Name": "UnrealImGuiWidgets",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ImGui",
+			"Enabled": true
+		},
+		{
+			"Name": "Angelscript",
+			"Enabled": true
+		},
+		{
+			"Name": "AngelscriptImGui",
+			"Enabled": true
+		}
+	]
+}
