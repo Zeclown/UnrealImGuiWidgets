@@ -3,6 +3,8 @@
 #include <imgui.h>
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
+
+#include "ImDrawList.h"
 #include "ImGuiCommon.h"
 
 static ImVector<ImRect> s_GroupPanelLabelStack;
@@ -128,4 +130,10 @@ void UImGuiCustomWidgetFunctionLibrary::EndGroupPanel()
     ImGui::Dummy(ImVec2(0.0f, 0.0f));
 	ImGui::Spacing();
     ImGui::EndGroup();
+}
+
+FImGuiDrawList UImGuiCustomWidgetFunctionLibrary::GetCurrentDrawList()
+{
+	FImGuiDrawList DrawList = FImGuiDrawList(ImGui::GetWindowDrawList());
+	return DrawList;
 }

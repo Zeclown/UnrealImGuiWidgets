@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "ImDrawList.h"
 #include "ImGuiCustomWidgetFunctionLibrary.generated.h"
 
 /**
@@ -18,6 +19,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category="ImGui")
 	static void EndGroupPanel();
 
-	
-	
+	UFUNCTION(BlueprintCallable, Category="ImGui")
+	static FImGuiDrawList GetCurrentDrawList();
 };

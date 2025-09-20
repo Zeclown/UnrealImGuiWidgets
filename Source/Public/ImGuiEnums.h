@@ -8,7 +8,7 @@
 
 // same as "ImGuiCond_" from "imgui.h"
 UENUM(BlueprintType)
-enum class EImGuiConditions
+enum class EImGuiConditions : uint8
 {
 	// No condition (always set the variable), same as _Always
 	NoneCondition UMETA(DisplayName = "None", Hidden),
@@ -24,7 +24,7 @@ enum class EImGuiConditions
 
 
 UENUM(BlueprintType)
-enum class ImGui_DragType
+enum class ImGui_DragType : uint8
 {
 	Drag_Float		UMETA(DisplayName = "Float"),
 	Drag_Int		UMETA(DisplayName = "Int"),
@@ -37,7 +37,7 @@ enum class ImGui_DragType
 };
 
 UENUM(BlueprintType)
-enum class EImGuiDrawFlags
+enum class EImGuiDrawFlags : uint8
 {
     None                        = 0,
     Closed                      = 1 << 0, // PathStroke(), AddPolyline(): specify that shape should be closed (Important: this is always == 1 for legacy reason)
@@ -45,12 +45,4 @@ enum class EImGuiDrawFlags
     RoundCornersTopRight        = 1 << 5, // AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners). Was 0x02.
     RoundCornersBottomLeft      = 1 << 6, // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners). Was 0x04.
     RoundCornersBottomRight     = 1 << 7, // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f, we default to all corners). Wax 0x08.
-    RoundCornersNone            = 1 << 8, // AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
-    RoundCornersTop             = ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight,
-    RoundCornersBottom          = ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight,
-    RoundCornersLeft            = ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersTopLeft,
-    RoundCornersRight           = ImDrawFlags_RoundCornersBottomRight | ImDrawFlags_RoundCornersTopRight,
-    RoundCornersAll             = ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight | ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight,
-    RoundCornersDefault_        = ImDrawFlags_RoundCornersAll, // Default to ALL corners if none of the _RoundCornersXX flags are specified.
-    RoundCornersMask_           = ImDrawFlags_RoundCornersAll | ImDrawFlags_RoundCornersNone
 };
