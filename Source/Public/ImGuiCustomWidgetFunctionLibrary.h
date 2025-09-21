@@ -15,7 +15,7 @@ class UNREALIMGUIWIDGETS_API UImGuiCustomWidgetFunctionLibrary : public UBluepri
 
 public:
 	UFUNCTION(BlueprintCallable, Category="ImGui")
-	static void BeginGroupPanel(FString Label, FVector2D Size);
+	static void BeginGroupPanel(FString Label, FVector2D Size, bool bHideLabel = false);
 	UFUNCTION(BlueprintCallable, Category="ImGui")
 	static void EndGroupPanel();
 

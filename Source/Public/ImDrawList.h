@@ -174,19 +174,19 @@ class UImGuiDrawListMixinLibrary : public UObject
 	UFUNCTION(ScriptCallable)
 	static void AddImage(const FImGuiDrawList& DrawList, int User_Texture_Id, const FVector2D& P_Min, const FVector2D& P_Max, const FVector2D& Uv_Min = FVector2D(0, 0), const FVector2D& Uv_Max = FVector2D(1, 1), FLinearColor Col = FLinearColor::White)
 	{
-		DrawList.DrawListImpl->AddImage(reinterpret_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P_Min), IMGUI_FVECTOR2D_TO_IMVEC2(P_Max), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Min), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Max), IMGUI_FLINEARCOLOR_TO_U32(Col));
+		DrawList.DrawListImpl->AddImage(static_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P_Min), IMGUI_FVECTOR2D_TO_IMVEC2(P_Max), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Min), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Max), IMGUI_FLINEARCOLOR_TO_U32(Col));
 	}
 
 	UFUNCTION(ScriptCallable)
 	static void AddImageQuad(const FImGuiDrawList& DrawList, int User_Texture_Id, const FVector2D& P1, const FVector2D& P2, const FVector2D& P3, const FVector2D& P4, const FVector2D& Uv1 = FVector2D(0, 0), const FVector2D& Uv2 = FVector2D(1, 0), const FVector2D& Uv3 = FVector2D(1, 1), const FVector2D& Uv4 = FVector2D(0, 1), FLinearColor Col = FLinearColor::White)
 	{
-		DrawList.DrawListImpl->AddImageQuad(reinterpret_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P1), IMGUI_FVECTOR2D_TO_IMVEC2(P2), IMGUI_FVECTOR2D_TO_IMVEC2(P3), IMGUI_FVECTOR2D_TO_IMVEC2(P4), IMGUI_FVECTOR2D_TO_IMVEC2(Uv1), IMGUI_FVECTOR2D_TO_IMVEC2(Uv2), IMGUI_FVECTOR2D_TO_IMVEC2(Uv3), IMGUI_FVECTOR2D_TO_IMVEC2(Uv4), IMGUI_FLINEARCOLOR_TO_U32(Col));
+		DrawList.DrawListImpl->AddImageQuad(static_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P1), IMGUI_FVECTOR2D_TO_IMVEC2(P2), IMGUI_FVECTOR2D_TO_IMVEC2(P3), IMGUI_FVECTOR2D_TO_IMVEC2(P4), IMGUI_FVECTOR2D_TO_IMVEC2(Uv1), IMGUI_FVECTOR2D_TO_IMVEC2(Uv2), IMGUI_FVECTOR2D_TO_IMVEC2(Uv3), IMGUI_FVECTOR2D_TO_IMVEC2(Uv4), IMGUI_FLINEARCOLOR_TO_U32(Col));
 	}
 
 	UFUNCTION(ScriptCallable)
 	static void AddImageRounded(const FImGuiDrawList& DrawList, int User_Texture_Id, const FVector2D& P_Min, const FVector2D& P_Max, const FVector2D& Uv_Min, const FVector2D& Uv_Max, FLinearColor Col, float Rounding, EImGuiDrawFlags Flags = EImGuiDrawFlags::None)
 	{
-		DrawList.DrawListImpl->AddImageRounded(reinterpret_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P_Min), IMGUI_FVECTOR2D_TO_IMVEC2(P_Max), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Min), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Max), IMGUI_FLINEARCOLOR_TO_U32(Col), Rounding, static_cast<ImDrawFlags>(Flags));
+		DrawList.DrawListImpl->AddImageRounded(static_cast<ImTextureID>(User_Texture_Id), IMGUI_FVECTOR2D_TO_IMVEC2(P_Min), IMGUI_FVECTOR2D_TO_IMVEC2(P_Max), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Min), IMGUI_FVECTOR2D_TO_IMVEC2(Uv_Max), IMGUI_FLINEARCOLOR_TO_U32(Col), Rounding, static_cast<ImDrawFlags>(Flags));
 	}
 
 	UFUNCTION(ScriptCallable)

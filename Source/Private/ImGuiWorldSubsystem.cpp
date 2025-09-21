@@ -5,13 +5,14 @@
 #include <imgui.h>
 #include "ImGuiWindow.h"
 #include "Engine/World.h"
+#include "GameFramework/PlayerInput.h"
 #include "HAL/IConsoleManager.h"
 
 #define MISSING_FLAG 0
 
 TArray<TSubclassOf<UImGuiWindow>> UImGuiWorldSubsystem::RegisteredClasses = TArray<TSubclassOf<UImGuiWindow>>();
 
-FAutoConsoleCommandWithWorldAndArgs UImGuiWorldSubsystem::ToggleImGuiCommand(TEXT("game.toggleImGui"),
+FAutoConsoleCommandWithWorldAndArgs UImGuiWorldSubsystem::Exec_ToggleImGuiCommand(TEXT("imguiwidgets.toggleImGui"),
 	TEXT("Toggles the Imgui Debug Windows."),
 	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& InParams, UWorld* InWorld)
 	{
@@ -22,10 +23,26 @@ FAutoConsoleCommandWithWorldAndArgs UImGuiWorldSubsystem::ToggleImGuiCommand(TEX
 		}
 	}));
 
+FAutoConsoleCommandWithWorldAndArgs UImGuiWorldSubsystem::Exec_CloseAllImGuiWindowsCommand(TEXT("imguiwidgets.closeall"),
+	TEXT("Closes all Imgui Debug Windows."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& InParams, UWorld* InWorld)
+	{
+		UImGuiWorldSubsystem* WorldSubsystem = InWorld->GetSubsystem<UImGuiWorldSubsystem>();
+		if(WorldSubsystem)
+		{
+			WorldSubsystem->Exec_CloseAllImGuiWindows();
+		}
+	}));
+
+void UImGuiDebugSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+}
+
 void UImGuiWorldSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
+	Start();
 }
 
 void UImGuiWorldSubsystem::Deinitialize()
@@ -75,6 +92,7 @@ void UImGuiWorldSubsystem::Start()
 		FString EachWindowName = EachSavedWindowInfo.WindowClass->GetDefaultObject<UImGuiWindow>()->WindowName;
 		ShowImGuiWindowByName(EachWindowName, true);
 	}
+
 	SavedWindowInfos.Empty();
 }
 
@@ -87,15 +105,14 @@ bool UImGuiWorldSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 #endif
 }
 
+void UImGuiWorldSubsystem::UpdateInputs()
+{
+	// Input handling has been removed - use console commands instead
+}
+
 void UImGuiWorldSubsystem::Tick(float DeltaTime)
 {
 	bIsToggledOn = FImGuiModule::Get().IsInputMode();
-	// TODO: This is a hack to make sure the input is bound to the correct player controller
-	if(GetWorld() && BoundPlayerController != GetWorld()->GetFirstPlayerController())
-	{
-		TryToBindInput();
-	}
-	
 	CheckRegisteredClasses();
 }
 
@@ -104,24 +121,17 @@ bool UImGuiWorldSubsystem::IsTickable() const
 	return bStarted;
 }
 
+void UImGuiWorldSubsystem::Exec_ToggleImGui()
+{
+	bIsToggledOn = !bIsToggledOn;
+	FImGuiModule::Get().SetInputMode(bIsToggledOn);
+}
+
 void UImGuiWorldSubsystem::Exec_CloseAllImGuiWindows()
 {
 	for(UImGuiWindow* EachWindow : WindowInstances)
 	{
 		EachWindow->bIsShown = false;
-	}
-}
-
-void UImGuiWorldSubsystem::TryToBindInput()
-{
-	if(APlayerController * PlayerController = GetWorld()->GetFirstPlayerController())
-	{
-		if(PlayerController->InputComponent)
-		{
-			PlayerController->InputComponent->BindKey(Settings->ToggleMenuKey, IE_Pressed, this, &UImGuiWorldSubsystem::Exec_ToggleImGui);
-			PlayerController->InputComponent->BindKey(Settings->CloseAllWindowsKey, IE_Released, this, &UImGuiWorldSubsystem::Exec_CloseAllImGuiWindows);
-			BoundPlayerController = PlayerController;
-		}
 	}
 }
 
@@ -290,11 +300,6 @@ void UImGuiWorldSubsystem::Display()
 	}
 }
 
-void UImGuiWorldSubsystem::Exec_ToggleImGui()
-{
-	bIsToggledOn = !bIsToggledOn;
-	FImGuiModule::Get().SetInputMode(bIsToggledOn);
-}
 
 void UImGuiWorldSubsystem::ShowCategory(UImGuiCategory* InCategory)
 {

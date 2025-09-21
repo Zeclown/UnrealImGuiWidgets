@@ -5,6 +5,7 @@
 #include "Subsystems/EngineSubsystem.h"
 #include "Templates/SubclassOf.h"
 #include "Engine/DeveloperSettings.h"
+#include "GameFramework/PlayerInput.h"
 #include "Subsystems/WorldSubsystem.h"
 
 #include "ImGuiWorldSubsystem.generated.h"
@@ -28,17 +29,21 @@ public:
 	TArray<FString> WindowNames;
 };
 
-UCLASS(config = Game, defaultconfig, meta=(DisplayName="Angelscript ImGui"))
+UCLASS(config = Plugin, defaultconfig, meta=(DisplayName="Angelscript ImGui"))
 class UImGuiDebugSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Config, Category="Toggle Menu")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Config, Category="ImGui Controls")
 	FKey ToggleMenuKey;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Config, Category="Toggle Menu")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Config, Category="ImGui Controls")
 	FKey CloseAllWindowsKey;
+
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
 };
 
 USTRUCT()
@@ -53,7 +58,7 @@ struct FSavedImGuiWindowInfo
 /**
  * 
  */
-UCLASS(config = ImGui)
+UCLASS(config = ImGuiWidgets)
 class UNREALIMGUIWIDGETS_API UImGuiWorldSubsystem : public UTickableWorldSubsystem
 {
 	GENERATED_BODY()
@@ -67,6 +72,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void Start();
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	virtual void UpdateInputs();
 	
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override;
@@ -93,17 +99,17 @@ public:
 	}
 	
 protected:
-
-	void TryToBindInput();
 	
 	void ShowCategory(UImGuiCategory* Category);
 	void CheckRegisteredClasses();
 	
 	UFUNCTION(BlueprintCallable)
 	void Exec_ToggleImGui();
-	
+
+	UFUNCTION(BlueprintCallable)
 	void Exec_CloseAllImGuiWindows();
 private:
+	
 	bool bIsToggledOn = false;
 	
 	static TArray<TSubclassOf<UImGuiWindow>> RegisteredClasses;
@@ -116,13 +122,11 @@ private:
 	TArray<UImGuiWindow *> WindowInstances;
 	
 	UPROPERTY()
-	TWeakObjectPtr<APlayerController> BoundPlayerController;
-	
-	UPROPERTY()
 	UImGuiCategory* RootCategory;
 
 	bool bStarted = false;
 	
-	static FAutoConsoleCommandWithWorldAndArgs ToggleImGuiCommand;
+	static FAutoConsoleCommandWithWorldAndArgs Exec_ToggleImGuiCommand;
+	static FAutoConsoleCommandWithWorldAndArgs Exec_CloseAllImGuiWindowsCommand;
 	UImGuiDebugSettings const* Settings;
 };

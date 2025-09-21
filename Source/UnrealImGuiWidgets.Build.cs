@@ -17,6 +17,7 @@ namespace UnrealBuildTool.Rules
 			PublicDependencyModuleNames.AddRange(new string[]
 			{
 				"Core",
+				"EnhancedInput",
 				"CoreUObject",
 				"Engine",
 				"InputCore",
